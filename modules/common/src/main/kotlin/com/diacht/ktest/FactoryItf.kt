@@ -15,7 +15,7 @@ abstract class FactoryItf {
     /**
      * Метод для прийняття замовлення, на вході список з даними про тип замовлення та кількість.
      */
-    abstract fun order(order: List<Pair<ProductType, Int>>) : List<Product>
+    abstract fun order(order: List<Pair<ProductType, Int>>) : Product
 
     /**
      * Метод для отримання залишків продуктів.

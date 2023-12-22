@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 const val MAX_PROCESS_PRODUCT = 5
 
 open class Machine(private val storage: Storage) {
-    private var currentReciept : Receipt? = null
+    var currentReciept : Receipt? = null
 
     /**
      * Метод для отримання залишків продуктів.
@@ -32,7 +32,7 @@ open class Machine(private val storage: Storage) {
     /**
      * Створити вихідний продукт.
      */
-    fun executeProcess() : Product {
+    open fun executeProcess() : Product {
         val receipt = currentReciept ?: throw IllegalStateException("Receipt isn't set")
         receipt.products.forEach {
             storage.getProduct(it.type, it.count)

@@ -1,55 +1,35 @@
 import com.diacht.ktest.compose.startTestUi
 import me.ssi.helloworld.BuildConfig
-import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.abs
-import kotlin.math.sin
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlin.math.sqrt
+import java.net.URL
 
 fun seed(): String = "SichkorizSerhii"
 
-
 fun labNumber() : Int = BuildConfig.LAB_NUMBER
 
-fun iCalculate(x0: Int = -55, x1: Int = -16, x2: Int = -70, x3: Int = 99): Double {
-    val maxAbs = max(abs(x0), max(abs(x1), max(abs(x2), abs(x3))))
-    return cos(maxAbs.toDouble())
-}
-
-fun dCalculate(x0: Double = -57.33, x1: Double = -2.56, x2: Double = 9.02, x3: Double = 28.75): Double {
-    val maxAbs = max(abs(x0), max(abs(x1), max(abs(x2), abs(x3))))
-    return sin(maxAbs)
-}
-
-fun strCalculate(x0: String, x1: String): Int {
-    require(x0.length == x1.length)
-
-    var differences = 0
-    for (i in x0.indices) {
-        val charX0 = x0[i]
-        val charX1 = x1[i]
-
-        if ((charX0 == 'T' && charX1 == 'C') || (charX0 == 'C' && charX1 == 'T')) {
-            differences += 2
-        } else if ((charX0 == 'T' || charX0 == 'C') && (charX1 == 'T' || charX1 == 'C')) {
-            differences++
+suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
+    val deferredResults = strList.map { str ->
+        async {
+            val url = "http://diacht.2vsoft.com/api/send-number?message=$str"
+            val response = URL(url).readText().toDouble()
+            response
         }
     }
 
-    return differences
+    val results = deferredResults.awaitAll()
+    sqrt(results.map { it * it }.sum())
 }
 
-fun main(args: Array<String>) {
+suspend fun main(args: Array<String>) {
     println("Лабораторна робота №${labNumber()} користувача ${seed()}")
 
-    val result = iCalculate()
-    println("Результат розрахунку Завдання №1 sCalculate() = $result")
+    val strList = listOf("x0", "x1", "x2", "x3", "x4", "x5", "x6")
 
-    val dResult = dCalculate()
-    println("Результат розрахунку Завдання №2 dCalculate() = $dResult")
-
-    val strResult = strCalculate("ATGCJ", "TAGCT")
-    println("Результат розрахунку Завдання №3 strCalculate() = $strResult")
-
+    val result = serverDataCalculate(strList)
+    println("Результат обчислення: $result")
 
     startTestUi(seed(), labNumber())
 }

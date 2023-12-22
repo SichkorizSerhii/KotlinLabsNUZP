@@ -1,7 +1,7 @@
 import Versions.compose
 
 plugins {
-    kotlin("jvm") version Versions.kotlin
+    kotlin("jvm") version "1.8.0"
     id("org.jetbrains.compose") version Versions.compose
     application
 }
@@ -18,6 +18,7 @@ repositories {
 dependencies {
     implementation(Versions.library)
     implementation(compose.desktop.currentOs)
+    implementation(project(":juicefactory"))
     testImplementation(kotlin("test"))
 }
 
