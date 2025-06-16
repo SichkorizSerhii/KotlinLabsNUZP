@@ -30,6 +30,7 @@ suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope 
     val sumOfSquares = numbers.sumOf { number ->
         val value = number.await().toDouble()
         value * value
+        
     }
     sqrt(sumOfSquares)
 }
