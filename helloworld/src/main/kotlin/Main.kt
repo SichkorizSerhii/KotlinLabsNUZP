@@ -14,7 +14,7 @@ fun labNumber() : Int = BuildConfig.LAB_NUMBER
 
 suspend fun getNumberFromServer(message: String): Int {
     return withContext(Dispatchers.IO) {
-        val url = URL("http://diacht.2vsoft.com/api/send-number?message=test")
+        val url = URL("http://diacht.2vsoft.com/api/send-number?message=$message")
         val connection = url.openConnection()
         connection.connect()
         val input = connection.getInputStream()
