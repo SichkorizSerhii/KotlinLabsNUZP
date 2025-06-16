@@ -28,8 +28,8 @@ suspend fun getNumberFromServer(message: String): Int {
 suspend fun serverDataCalculate(strList: List<String>): Double = coroutineScope {
     val numbers = strList.map { async { getNumberFromServer(it) } }
     val sumOfSquares = numbers.sumOf { number ->
-        val value = number.await()
-        value * value.toDouble()
+        val value = number.await().toDouble()
+        value * value
     }
     sqrt(sumOfSquares)
 }
